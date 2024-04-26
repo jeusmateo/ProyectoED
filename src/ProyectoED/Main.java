@@ -4,6 +4,8 @@
  */
 package ProyectoED;
 
+import view.View;
+
 /**
  *
  * @author jeusm
@@ -15,6 +17,9 @@ public class Main {
      */
     public static void main(String[] args) {
         // TODO code application logic here
+        View v = new View();
+        v.setVisible(true);
+        
         System.out.println("Hola");
     }
     
