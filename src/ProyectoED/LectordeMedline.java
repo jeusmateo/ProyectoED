@@ -16,7 +16,10 @@ public class LectordeMedline {
             String line;
             while ((line = br.readLine()) != null) {
                 // Eliminar signos de puntuación que no son letras y convertir a minúsculas
-                String[] tokens = line.replaceAll("[^a-zA-Z ]", "").toLowerCase().split("\\s+");
+                /*
+                 * \p{L} matches any kind of letter from any language
+                 */
+                String[] tokens = line.replaceAll("[^\\p{L} ]", "").toLowerCase().split("\\s+");
 
                 // Agregar palabras al ArrayList
                 for (String token : tokens) {
