@@ -12,7 +12,15 @@ import java.util.List;
  * @author jeusm
  */
 public class ShellSort<T extends Comparable<T>> {
-    List<T> arr = new ArrayList<>();
+    List<T> arr;
+
+    public List<T> getArr() {
+        return arr;
+    }
+
+    public void setArr(List<T> arr) {
+        this.arr = arr;
+    }
 
     public ShellSort(List<T> arr){
         this.arr = arr;
