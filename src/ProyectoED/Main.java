@@ -6,6 +6,7 @@ package ProyectoED;
 
 import view.View;
 
+import java.util.ArrayList;
 /**
  *
  * @author jeusm
@@ -20,7 +21,27 @@ public class Main {
         View v = new View();
         v.setVisible(true);
         
+    
         System.out.println("Hola");
+
+        //tokenizador del corpus y meterlo a un arraylist
+        //convenrtir arraylist toArray, para que sea mas rapido
+
+        // obtener la palabra a encontrar desde la ui y cuando se presione buscar comenzar los ordenamientos y busquedas
+
+
+        //ordenamientos:
+
+        //burbuja de menor a mayor
+        //busqueda binaria (arreglo ordenado, elemento a buscar)
+
+        //inserccion de menor a mayor
+        //busqueda binaria
+
+        //...
+        // arbol abb. insertarCorpus(corpus)
+        // arbol abb. buscar(palabra)
+       
     }
     
 }
