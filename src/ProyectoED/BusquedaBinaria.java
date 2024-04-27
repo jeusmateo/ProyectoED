@@ -1,10 +1,11 @@
 package ProyectoED;
 
 import java.util.ArrayList;
+import java.util.List;
 
 public class BusquedaBinaria {
 
-    public Boolean busquedaBinaria(ArrayList<String> corpusOrdenado, String elemento) {
+    public Boolean busquedaBinaria(List<String> corpusOrdenado, String elemento) {
         int inicio = 0;
         int fin = corpusOrdenado.size() - 1;
     
