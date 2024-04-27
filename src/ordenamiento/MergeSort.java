@@ -1,23 +1,14 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package ordenamiento;
 
 import java.util.ArrayList;
-import java.util.Arrays;
+import java.util.List;
 import java.util.Random;
 
-/**
- *
- * @author jorge.reyes
- */
 public class MergeSort<T extends Comparable<T>> {
 
-    public ArrayList<T> ordenaMerge(ArrayList<T> L) {
+    public List<T> ordenaMerge(List<T> L) {
         int n = L.size(), i, m;
-        ArrayList<T> L1 = new ArrayList<T>(), L2 = new ArrayList<T>();
+        List<T> L1 = new ArrayList<T>(), L2 = new ArrayList<T>();
         if (n > 1) {
             m = n / 2;
             for (i = 0; i < m; i++)
@@ -29,8 +20,8 @@ public class MergeSort<T extends Comparable<T>> {
         return L;
     }
 
-    public ArrayList<T> merge(ArrayList<T> L1, ArrayList<T> L2) {
-        ArrayList<T> lista = new ArrayList<T>();
+    public List<T> merge(List<T> L1, List<T> L2) {
+        List<T> lista = new ArrayList<T>();
         while (!L1.isEmpty() && !L2.isEmpty()) {
             if (L1.get(0).compareTo(L2.get(0)) < 0) {
                 lista.add(L1.get(0));
@@ -52,17 +43,13 @@ public class MergeSort<T extends Comparable<T>> {
     }
 
     public static void main(String[] args) {
-        MergeSort<String> merge = new MergeSort<>();
-        ArrayList<String> lista = new ArrayList<>();
+        MergeSort<Integer> merge = new MergeSort<>();
+        List<Integer> lista = new ArrayList<>();
 
-        // Random rand = new Random();
-        // for (int i = 0; i < 10; i++){
-        //     lista.add(rand.nextInt());
-        // }
-        // lista.add("null");
-        // lista.add("nul22");
-        // lista.add("nulleee");
-        // lista.add("asnull");
+        Random rand = new Random();
+        for (int i = 0; i < 100000; i++){
+            lista.add(rand.nextInt());
+        }
 
         System.out.println("Lista desordenada");
         System.out.println(lista);
