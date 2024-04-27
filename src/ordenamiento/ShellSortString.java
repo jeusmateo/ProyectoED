@@ -14,6 +14,14 @@ import java.util.List;
 public class ShellSortString {
     String[] A;
 
+    public String[] getA() {
+        return A;
+    }
+
+    public void setA(String[] a) {
+        A = a;
+    }
+
     public ShellSortString(String[] A) {
         this.A = A;
     }
