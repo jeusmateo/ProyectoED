@@ -21,7 +21,7 @@ public class LectordeMedline {
                 // Agregar palabras al ArrayList
                 for (String token : tokens) {
                     // Ignorar palabras vacías
-                    if (!token.isEmpty()) {
+                    if (!token.isEmpty() && !words.contains(token)) {
                         words.add(token);
                     }
                 }
