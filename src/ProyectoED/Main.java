@@ -3,7 +3,7 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Main.java to edit this template
  */
 package ProyectoED;
-import java.util.ArrayList;
+
 /**
  *
  * @author jeusm
@@ -14,8 +14,6 @@ public class Main {
      * @param args the command line arguments
      */
     public static void main(String[] args) {
-    
-        System.out.println("Hola");
 
         //tokenizador del corpus y meterlo a un arraylist
         //convenrtir arraylist toArray, para que sea mas rapido
@@ -29,7 +27,8 @@ public class Main {
         //busqueda binaria (arreglo ordenado, elemento a buscar)
 
         //inserccion de menor a mayor
-        //busqueda binaria
+        //busqueda binaria 
+        
 
         //...
         // arbol abb. insertarCorpus(corpus)

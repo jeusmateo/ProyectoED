@@ -1,4 +1,4 @@
-package ProyectoED;
+package ProyectoED.OrdenacionInterna;
 
 import java.util.ArrayList;
 
