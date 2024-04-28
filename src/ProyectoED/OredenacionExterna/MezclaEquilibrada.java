@@ -46,27 +46,23 @@ import java.util.ArrayList;
        dos[1] = new DataOutputStream(new FileOutputStream(archivo2, false));
        dis = new DataInputStream(new FileInputStream(nombreArchivo));
  
-       //Primero, verifica si existen datos en el archivo que se va a leer
-       while (dis.available() != 0) {
+       while (dis.available() != 0) { //Mientras existan datos en el archivo
 
-         anterior = actual;
-         actual = dis.readUTF();
+         anterior = actual; //Almacenar el dato anterior
+         actual = dis.readUTF(); //Leer el dato actual
  
-         if (anterior == null) {
+         if (anterior == null) { //Primera vez: inicializar con la primera palabra
            anterior = actual;
          }
- 
+
          //Cambio de secuencia. Manipulacion del indice del arreglo de archivos
          if (anterior.compareTo(actual) > 0) {
            indexOutputStream = indexOutputStream == 0 ? 1 : 0;
-           //Actualizacion de la variable booleana, esto indica la existencia
-           //de un cambio de secuencia
+           //Actualizacion de la variable booleana, esto indica la existencia de un cambio de secuencia
            hayCambioDeSecuencia = true;
          }
  
-         //Imprimir el dato contenido en actual y escribirlo en el archivo correspondiente
-         //System.out.println(indexOutputStream + ") "+ actual);
-         dos[indexOutputStream].writeUTF(actual);
+         dos[indexOutputStream].writeUTF(actual); //Escribir el dato en el archivo correspondiente
        }
      } catch (FileNotFoundException e) {
        System.out.println("Error lectura/escritura");
@@ -97,14 +93,13 @@ import java.util.ArrayList;
  
    //Metodo de fusion de los datos obtenidos en el metodo de particion
    public void fusion(String nombreArchivo, String archivo1, String archivo2) {
-     //Variables para almacenar los datos de los archivos
-     //que contienen las particiones
+     //Variables para almacenar los datos de los archivos que contienen las particiones
      String[] actual = new String[2];
      String[] anterior = new String[2];
      boolean[] finArchivo = new boolean[2];
      int indexArchivo = 0;
  
-     //Creacion de los objetos asociacos a los archivos
+     //Creacion de los objetos asociados a los archivos
      DataOutputStream dos = null;
      DataInputStream dis[] = new DataInputStream[2];
  
@@ -115,51 +110,42 @@ import java.util.ArrayList;
        dos = new DataOutputStream(new FileOutputStream(nombreArchivo, false));
  
        //Condicion principal: debe haber datos en ambos archivos de lectura
-       //Es importante notar que al inicio siempre hay al menos un dato en
-       //cada archivo, de otra forma el metodo de particion hubiera
-       //generado una sola secuencia y no entrariamos a la fusion.
-       while (dis[0].available() != 0 && dis[1].available() != 0) {
+       while (dis[0].available() != 0 && dis[1].available() != 0) { //Mientras existan datos en los archivos
  
          // 1era vez: inicializar con la primera palabra de cada archivo
-         if (anterior[0] == null && anterior[1] == null) {
-           anterior[0] = actual[0] = dis[0].readUTF();
-           anterior[1] = actual[1] = dis[1].readUTF();
+         if (anterior[0] == null && anterior[1] == null) { 
+           anterior[0] = actual[0] = dis[0].readUTF(); //Leer la primera palabra del archivo 1
+           anterior[1] = actual[1] = dis[1].readUTF(); //Leer la primera palabra del archivo 2
          }
  
-         // al inicio del procesamiento de dos secuencias, anterior y
-         // actual apuntan a la primer palabra de cada secuencia.
+         // al inicio del procesamiento de dos secuencias, anterior y actual apuntan a la primer palabra de cada secuencia.
          anterior[0] = actual[0];
          anterior[1] = actual[1];
  
          // mezclamos las dos secuencias hasta que una acaba
-         while (anterior[0].compareTo(actual[0]) <= 0 &&
-             anterior[1].compareTo(actual[1]) <= 0) {
-           indexArchivo = (actual[0].compareTo(actual[1]) <= 0) ? 0 : 1;
-           dos.writeUTF(actual[indexArchivo]);
-           anterior[indexArchivo] = actual[indexArchivo];
+         while (anterior[0].compareTo(actual[0]) <= 0 && anterior[1].compareTo(actual[1]) <= 0) { //Mientras el dato actual sea mayor o igual al dato anterior
+            indexArchivo = (actual[0].compareTo(actual[1]) <= 0) ? 0 : 1; 
+            dos.writeUTF(actual[indexArchivo]); //Escribir el dato actual
+            anterior[indexArchivo] = actual[indexArchivo]; //Actualizar el dato anterior
+           
+            if (dis[indexArchivo].available() != 0) {  //si existan datos en el archivo
+              actual[indexArchivo] = dis[indexArchivo].readUTF(); //Leer el dato actual
+            } else {
+              finArchivo[indexArchivo] = true;
+              break;
+            }
+         } // fin del while cuando una secuencia acaba
  
-           // salir del while cuando no haya datos, pero ya procesamos
-           // el ultimo nombre del archivo
-           if (dis[indexArchivo].available() != 0) {
-             actual[indexArchivo] = dis[indexArchivo].readUTF();
-           } else {
-             finArchivo[indexArchivo] = true;
-             break;
-           }
-         }
- 
-         // en este punto indexArchivo nos dice que archivo causo
-         // que salieramos del while anterior, por lo que tenemos
-         // que purgar el otro archivo
+         // en este punto indexArchivo nos dice que archivo causo que salieramos del while anterior, por lo que tenemos que purgar el otro archivo
          indexArchivo = indexArchivo == 0 ? 1 : 0;
  
-         while (anterior[indexArchivo].compareTo(actual[indexArchivo]) <= 0) {
-           dos.writeUTF(actual[indexArchivo]);
-           anterior[indexArchivo] = actual[indexArchivo];
-           if (dis[indexArchivo].available() != 0) {
-             actual[indexArchivo] = dis[indexArchivo].readUTF();
+         while (anterior[indexArchivo].compareTo(actual[indexArchivo]) <= 0) { //Mientras el dato actual sea mayor o igual al dato anterior
+           dos.writeUTF(actual[indexArchivo]); //Escribir el dato actual
+           anterior[indexArchivo] = actual[indexArchivo]; //Actualizar el dato anterior
+           if (dis[indexArchivo].available() != 0) { //Mientras existan datos en el archivo
+             actual[indexArchivo] = dis[indexArchivo].readUTF(); //Leer el dato actual
            } else {
-             finArchivo[indexArchivo] = true;
+             finArchivo[indexArchivo] = true; //Si no hay datos, marcar el fin del archivo
              break;
            }
          }
@@ -167,14 +153,14 @@ import java.util.ArrayList;
  
        // purgar los dos archivos en caso de que alguna secuencia haya quedado sola al final del archivo.
        // Para salir del while anterior alguno de los 2 archivos debio terminar, por lo que a lo mas uno de los dos whiles siguientes se ejecutara
-       if (!finArchivo[0]) {
-         dos.writeUTF(actual[0]);
-         while (dis[0].available() != 0) {
-           dos.writeUTF(dis[0].readUTF());
+       if (!finArchivo[0]) { // si el archivo 1 no ha terminado
+         dos.writeUTF(actual[0]); //Escribir el dato actual
+         while (dis[0].available() != 0) { //Mientras existan datos en el archivo
+           dos.writeUTF(dis[0].readUTF()); //Escribir el dato en el archivo
          }
        }
  
-       if (!finArchivo[1]) {
+       if (!finArchivo[1]) { // si el archivo 2 no ha terminado
          dos.writeUTF(actual[1]);
          while (dis[1].available() != 0) {
            dos.writeUTF(dis[1].readUTF());
@@ -207,7 +193,7 @@ import java.util.ArrayList;
  
    public void ordenar(String nombreArchivo) {
      int index = 0;
-     while (particion(nombreArchivo, "archivo1.txt", "archivo2.txt")) {
+     while (particion(nombreArchivo, "archivo1.txt", "archivo2.txt")) { //Mientras existan particiones
        //Imprime el numero de particiones-fusiones que le llevo a los
        //metodos de particion y fusion el ordenar el archivo
        System.out.println("Fusion " + ++index);
