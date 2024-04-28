@@ -5,40 +5,43 @@
  */
 package avl;
 
+
 import ProyectoED.NodoBin;
 
 /**
  *
  * @author jorge.reyes
+ * @param <T>
  */
-public class NodoAVL extends NodoBin {
+public class NodoAVL<T> extends NodoBin<T> {
     protected int fe;
-    protected NodoAVL padre;
+    protected NodoAVL<T> padre;
 
     public NodoAVL() {
     }
 
-    public NodoAVL(Object dato) {
+    public NodoAVL(T dato) {
         super(dato);
     }
 
-    public NodoAVL(Object dato, NodoBin izq, NodoBin der) {
+    public NodoAVL(T dato, NodoBin<T> izq, NodoBin<T> der) {
         super(dato, izq, der);
     }
 
-    public NodoAVL(Object dato, NodoBin izq, NodoBin der, NodoAVL padre) {
+    public NodoAVL(T dato, NodoBin<T> izq, NodoBin<T> der, NodoAVL<T> padre) {
         super(dato, izq, der);
         this.padre = padre;
     }
 
-    public static int altura(NodoAVL a) {
+    public static <T> int altura(NodoAVL<T> a) {
         if (a == null)
             return -1;
         else
-            return 1 + Math.max(altura((NodoAVL) a.getIzq()),
-                    altura((NodoAVL) a.getDer()));
+            return 1 + Math.max(altura((NodoAVL<T>) a.getIzq()),
+                    altura((NodoAVL<T>) a.getDer()));
     }
 
+    @Override
     public void inOrden() {
         if (izq != null)
             izq.inOrden();
@@ -47,6 +50,7 @@ public class NodoAVL extends NodoBin {
             der.inOrden();
     }
 
+    @Override
     public void preOrden() {
         System.out.println(dato + " FE:" + getFe());
         if (izq != null)
@@ -55,6 +59,7 @@ public class NodoAVL extends NodoBin {
             der.preOrden();
     }
 
+    @Override
     public void posOrden() {
         if (izq != null)
             izq.posOrden();
@@ -80,14 +85,14 @@ public class NodoAVL extends NodoBin {
     /**
      * @return the padre
      */
-    public NodoAVL getPadre() {
+    public NodoAVL<T> getPadre() {
         return padre;
     }
 
     /**
      * @param padre the padre to set
      */
-    public void setPadre(NodoAVL padre) {
+    public void setPadre(NodoAVL<T> padre) {
         this.padre = padre;
     }
 

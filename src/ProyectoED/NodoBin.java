@@ -8,19 +8,20 @@ package ProyectoED;
 /**
  *
  * @author jorge.reyes
+ * @param <T>
  */
-public class NodoBin {
-    protected Object dato;
-    protected NodoBin izq;
-    protected NodoBin der;
+public class NodoBin<T> {
+    protected T dato;
+    protected NodoBin<T> izq;
+    protected NodoBin<T> der;
     
-    public NodoBin(Object dato, NodoBin izq, NodoBin der){
+    public NodoBin(T dato, NodoBin<T> izq, NodoBin<T> der){
         this.dato = dato;
         this.izq = izq;
         this.der = der;
     }
     
-    public NodoBin(Object dato){
+    public NodoBin(T dato){
         this(dato,null,null);
     }
 
@@ -56,42 +57,42 @@ public class NodoBin {
     /**
      * @return the dato
      */
-    public Object getDato() {
+    public T getDato() {
         return dato;
     }
 
     /**
      * @param dato the dato to set
      */
-    public void setDato(Object dato) {
+    public void setDato(T dato) {
         this.dato = dato;
     }
 
     /**
      * @return the izq
      */
-    public NodoBin getIzq() {
+    public NodoBin<T> getIzq() {
         return izq;
     }
 
     /**
      * @param izq the izq to set
      */
-    public void setIzq(NodoBin izq) {
+    public void setIzq(NodoBin<T> izq) {
         this.izq = izq;
     }
 
     /**
      * @return the der
      */
-    public NodoBin getDer() {
+    public NodoBin<T> getDer() {
         return der;
     }
 
     /**
      * @param der the der to set
      */
-    public void setDer(NodoBin der) {
+    public void setDer(NodoBin<T> der) {
         this.der = der;
     }
 
