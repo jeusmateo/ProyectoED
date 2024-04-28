@@ -4,11 +4,23 @@
  */
 package view;
 
+import ProyectoED.BusquedaBinaria;
+import ProyectoED.LectordeMedline;
+import avl.ArbolAVL;
+import java.util.ArrayList;
+import java.util.List;
+import ordenamiento.MergeSort;
+import ordenamiento.ShellSort;
+
 /**
  *
  * @author jeusm
  */
 public class View extends javax.swing.JFrame {
+
+    final LectordeMedline LECTOR = new LectordeMedline();
+    final BusquedaBinaria BUSQUEDA = new BusquedaBinaria();
+    final List<String> PALABRAS = LectordeMedline.readAndProcessFile("medline_CDs.txt");
 
     /**
      * Creates new form View
@@ -28,8 +40,10 @@ public class View extends javax.swing.JFrame {
 
         txtInput = new javax.swing.JTextField();
         btnSearch = new javax.swing.JButton();
+        jLabel1 = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setTitle("Buscador");
 
         btnSearch.setText("Buscar");
         btnSearch.addActionListener(new java.awt.event.ActionListener() {
@@ -38,16 +52,20 @@ public class View extends javax.swing.JFrame {
             }
         });
 
+        jLabel1.setText("Palabra");
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
+                .addComponent(jLabel1)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(txtInput, javax.swing.GroupLayout.PREFERRED_SIZE, 150, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(18, 18, 18)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(btnSearch)
-                .addContainerGap(159, Short.MAX_VALUE))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -55,8 +73,9 @@ public class View extends javax.swing.JFrame {
                 .addContainerGap()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(txtInput, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(btnSearch))
-                .addContainerGap(266, Short.MAX_VALUE))
+                    .addComponent(btnSearch)
+                    .addComponent(jLabel1))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
         pack();
@@ -64,6 +83,51 @@ public class View extends javax.swing.JFrame {
 
     private void btnSearchActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSearchActionPerformed
         // TODO add your handling code here:
+        long inicio = 0, fin = 0, burbuja = 0, insercion = 0, shellsort = 0, quicksort = 0, mergesort = 0, mezcla = 0, abb = 0, avl = 0, ab = 0;
+        String palabra = txtInput.getText();
+        List<String> ordenado;
+        ShellSort<String> ss = new ShellSort(new ArrayList<>(PALABRAS));
+        MergeSort<String> ms = new MergeSort<>();
+
+        //shellsort
+        inicio = System.currentTimeMillis();
+        ss.sort();
+        BUSQUEDA.busquedaBinaria(ss.getArr(), palabra);
+        fin = System.currentTimeMillis();
+        shellsort = fin - inicio;
+
+        //MergeSort
+        inicio = System.currentTimeMillis();
+        ordenado = new ArrayList<>(PALABRAS);
+        ordenado = ms.ordenaMerge(ordenado);
+        BUSQUEDA.busquedaBinaria(ordenado, palabra);
+        fin = System.currentTimeMillis();
+        mergesort = fin - inicio;
+
+        //AVL
+        inicio = System.currentTimeMillis();
+        ArbolAVL<String> arbolAvl = new ArbolAVL<>(PALABRAS.get(0));
+        //arbol avl no inserta duplicados, ya lo comprobé, asi que en este caso no pasa nada
+        for (String e : PALABRAS) {
+            arbolAvl.insertar(e);
+        }
+        arbolAvl.buscar(palabra);
+        fin = System.currentTimeMillis();
+        avl = fin - inicio;
+
+        System.out.println("Estadisticas: ");
+        // metodos de ordenamiento
+        System.out.println("Burbuja: " + burbuja + " ms");
+        System.out.println("Insercion: " + insercion + " ms");
+        System.out.println("ShellSort: " + shellsort + " ms");
+        System.out.println("Quicksort: " + quicksort + " ms");
+        System.out.println("MergeSort: " + mergesort + " ms");
+        System.out.println("Mezcla homogenea: " + mezcla + " ms");
+
+        //arboles
+        System.out.println("Arboles Binarios de Busqueda: " + abb + " ms");
+        System.out.println("Arboles AVL: " + avl + " ms");
+        System.out.println("Arboles B: " + ab + " ms");
     }//GEN-LAST:event_btnSearchActionPerformed
 
     /**
@@ -103,6 +167,7 @@ public class View extends javax.swing.JFrame {
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnSearch;
+    private javax.swing.JLabel jLabel1;
     private javax.swing.JTextField txtInput;
     // End of variables declaration//GEN-END:variables
 }
