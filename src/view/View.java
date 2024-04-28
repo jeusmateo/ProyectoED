@@ -84,7 +84,7 @@ public class View extends javax.swing.JFrame {
     private void btnSearchActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSearchActionPerformed
         // TODO add your handling code here:
         long inicio = 0, fin = 0, burbuja = 0, insercion = 0, shellsort = 0, quicksort = 0, mergesort = 0, mezcla = 0, abb = 0, avl = 0, ab = 0;
-        String palabra = txtInput.getText();
+        String palabra = txtInput.getText().toLowerCase();
         List<String> ordenado;
         ShellSort<String> ss = new ShellSort(new ArrayList<>(PALABRAS));
         MergeSort<String> ms = new MergeSort<>();
