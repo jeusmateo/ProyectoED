@@ -5,58 +5,64 @@
  */
 package avl;
 
+import ProyectoED.ItemNotFoundException;
+import ProyectoED.NodoBin;
+
 /**
  *
  * @author jorge.reyes
+ * @param <T>
  */
-public class ArbolAVL {
-    protected NodoAVL raíz;
+public class ArbolAVL<T extends Comparable<T>> {
+    protected NodoAVL<T> raiz;
 
-    public ArbolAVL(Object o) {
-        raíz = new NodoAVL(o);
+    public ArbolAVL(T o) {
+        raiz = new NodoAVL<>(o);
     }
 
     public void inOrden() {
-        if (raíz != null)
-            raíz.inOrden();
+        if (raiz != null)
+            raiz.inOrden();
     }
 
     public void preOrden() {
-        if (raíz != null)
-            raíz.preOrden();
+        if (raiz != null)
+            raiz.preOrden();
     }
 
     public void posOrden() {
-        if (raíz != null)
-            raíz.posOrden();
+        if (raiz != null)
+            raiz.posOrden();
     }
 
-    public void insertar(Object o) {
-        insertarOrdenado(raíz, o);
+    public void insertar(T o) {
+        insertarOrdenado(raiz, o);
     }
 
-    public void insertarOrdenado(NodoAVL n, Object o) {
-        if ((int) o < (int) n.getDato()) {
+    public void insertarOrdenado(NodoAVL<T> n, T o) {
+        // if ((int) o < (int) n.getDato()) {
+        if (o.compareTo(n.getDato()) < 0) {
             if (n.getIzq() == null) {
-                n.setIzq(new NodoAVL(o, null, null, n));
+                n.setIzq(new NodoAVL<>(o, null, null, n));
                 recalcularFE(n);
             } else
-                insertarOrdenado((NodoAVL) n.getIzq(), o);
+                insertarOrdenado((NodoAVL<T>) n.getIzq(), o);
         } else {
-            if ((int) o > (int) n.getDato()) {
+            // if ((int) o > (int) n.getDato()) {
+            if (o.compareTo(n.getDato()) > 0) {
                 if (n.getDer() == null) {
-                    n.setDer(new NodoAVL(o, null, null, n));
+                    n.setDer(new NodoAVL<>(o, null, null, n));
                     recalcularFE(n);
                 } else
-                    insertarOrdenado((NodoAVL) n.getDer(), o);
+                    insertarOrdenado((NodoAVL<T>) n.getDer(), o);
             }
         }
     }
 
-    public void recalcularFE(NodoAVL nodo) {
+    public void recalcularFE(NodoAVL<T> nodo) {
         if (nodo != null) {
-            nodo.setFe(NodoAVL.altura((NodoAVL) nodo.getDer()) -
-                    NodoAVL.altura((NodoAVL) nodo.getIzq()));
+            nodo.setFe(NodoAVL.altura((NodoAVL<T>) nodo.getDer()) -
+                    NodoAVL.altura((NodoAVL<T>) nodo.getIzq()));
             if (nodo.getFe() == 2 || nodo.getFe() == -2)
                 balancear(nodo);
             else
@@ -64,40 +70,40 @@ public class ArbolAVL {
         }
     }
 
-    public void balancear(NodoAVL nodo) {
+    public void balancear(NodoAVL<T> nodo) {
         int feActual = nodo.getFe();
         if (feActual == 2) {
-            switch (((NodoAVL) nodo.getDer()).getFe()) {
+            switch (((NodoAVL<T>) nodo.getDer()).getFe()) {
                 case 0:
                 case 1:
                     rotacionDD(nodo);
-                    System.out.println("Rotación DD");
+                    // System.out.println("Rotación DD");
                     break;
                 case -1:
                     rotacionDI(nodo);
-                    System.out.println("Rotación DI");
+                    // System.out.println("Rotación DI");
                     break;
             }
         } else {
-            switch (((NodoAVL) nodo.getIzq()).getFe()) {
+            switch (((NodoAVL<T>) nodo.getIzq()).getFe()) {
                 case 0:
                 case -1:
                     rotacionII(nodo);
-                    System.out.println("Rotación II");
+                    // System.out.println("Rotación II");
                     break;
                 case 1:
                     rotacionID(nodo);
-                    System.out.println("Rotación ID");
+                    // System.out.println("Rotación ID");
                     break;
             }
         }
     }
 
-    public void rotacionDD(NodoAVL nodo) {
-        NodoAVL Padre = nodo.getPadre();
-        NodoAVL P = nodo;
-        NodoAVL Q = (NodoAVL) P.getDer();
-        NodoAVL B = (NodoAVL) Q.getIzq();
+    public void rotacionDD(NodoAVL<T> nodo) {
+        NodoAVL<T> Padre = nodo.getPadre();
+        NodoAVL<T> P = nodo;
+        NodoAVL<T> Q = (NodoAVL<T>) P.getDer();
+        NodoAVL<T> B = (NodoAVL<T>) Q.getIzq();
 
         if (Padre != null)
             if (Padre.getDer() == P)
@@ -105,7 +111,7 @@ public class ArbolAVL {
             else
                 Padre.setIzq(Q);
         else
-            raíz = Q;
+            raiz = Q;
 
         // Reconstruir el árbol
         P.setDer(B);
@@ -121,18 +127,18 @@ public class ArbolAVL {
         Q.setFe(0);
     }
 
-    public void rotacionII(NodoAVL nodo) {
-        NodoAVL Padre = nodo.getPadre();
-        NodoAVL P = nodo;
-        NodoAVL Q = (NodoAVL) P.getIzq();
-        NodoAVL B = (NodoAVL) Q.getDer();
+    public void rotacionII(NodoAVL<T> nodo) {
+        NodoAVL<T> Padre = nodo.getPadre();
+        NodoAVL<T> P = nodo;
+        NodoAVL<T> Q = (NodoAVL<T>) P.getIzq();
+        NodoAVL<T> B = (NodoAVL<T>) Q.getDer();
         if (Padre != null)
             if (Padre.getIzq() == P)
                 Padre.setIzq(Q);
             else
                 Padre.setDer(Q);
         else
-            raíz = Q;
+            raiz = Q;
         // Recontruir el árbol
         P.setIzq(B);
         Q.setDer(P);
@@ -146,20 +152,20 @@ public class ArbolAVL {
         Q.setFe(0);
     }
 
-    public void rotacionID(NodoAVL nodo) {
-        NodoAVL Padre = nodo.getPadre();
-        NodoAVL P = nodo;
-        NodoAVL Q = (NodoAVL) P.getIzq();
-        NodoAVL R = (NodoAVL) Q.getDer();
-        NodoAVL B = (NodoAVL) R.getIzq();
-        NodoAVL C = (NodoAVL) R.getDer();
+    public void rotacionID(NodoAVL<T> nodo) {
+        NodoAVL<T> Padre = nodo.getPadre();
+        NodoAVL<T> P = nodo;
+        NodoAVL<T> Q = (NodoAVL<T>) P.getIzq();
+        NodoAVL<T> R = (NodoAVL<T>) Q.getDer();
+        NodoAVL<T> B = (NodoAVL<T>) R.getIzq();
+        NodoAVL<T> C = (NodoAVL<T>) R.getDer();
         if (Padre != null)
             if (Padre.getDer() == nodo)
                 Padre.setDer(R);
             else
                 Padre.setIzq(R);
         else
-            raíz = R;
+            raiz = R;
 
         // Reconstruir el árbol
         Q.setDer(B);
@@ -193,13 +199,13 @@ public class ArbolAVL {
         }
     }
 
-    public void rotacionDI(NodoAVL nodo) {
-        NodoAVL Padre = nodo.getPadre();
-        NodoAVL P = nodo;
-        NodoAVL Q = (NodoAVL) P.getDer();
-        NodoAVL R = (NodoAVL) Q.getIzq();
-        NodoAVL B = (NodoAVL) R.getDer();
-        NodoAVL C = (NodoAVL) R.getIzq();
+    public void rotacionDI(NodoAVL<T> nodo) {
+        NodoAVL<T> Padre = nodo.getPadre();
+        NodoAVL<T> P = nodo;
+        NodoAVL<T> Q = (NodoAVL<T>) P.getDer();
+        NodoAVL<T> R = (NodoAVL<T>) Q.getIzq();
+        NodoAVL<T> B = (NodoAVL<T>) R.getDer();
+        NodoAVL<T> C = (NodoAVL<T>) R.getIzq();
 
         if (Padre != null)
             if (Padre.getIzq() == nodo)
@@ -207,7 +213,7 @@ public class ArbolAVL {
             else
                 Padre.setDer(R);
         else
-            raíz = R;
+            raiz = R;
 
         // Reconstuir el árbol
         Q.setIzq(B);
@@ -241,15 +247,44 @@ public class ArbolAVL {
         }
     }
 
+    public void buscar(T o) {
+        buscar(raiz, o);
+    }
+
+    public void buscar(NodoBin<T> n, T o) throws ItemNotFoundException {
+        if (o.compareTo(n.getDato()) < 0) {
+            if (n.getIzq() == null)
+                throw new ItemNotFoundException("El elemento no se encuentra");
+            else
+                buscar(n.getIzq(), o);
+        } else if (o.compareTo(n.getDato()) > 0) {
+            if (n.getDer() == null)
+                throw new ItemNotFoundException("El elemento no se encuentra");
+            else
+                buscar(n.getDer(), o);
+        } else
+            System.out.println("El elemento si está en el árbol");
+    }
+
     public static void main(String[] args) {
-        ArbolAVL arbol = new ArbolAVL(5);
-        arbol.insertar(56);
-        arbol.insertar(8);
-        arbol.insertar(91);
-        arbol.insertar(205);
-        arbol.insertar(512);
-        arbol.insertar(30);
-        arbol.insertar(602);
-        arbol.inOrden();
+        // ArbolAVL<Integer> arbol = new ArbolAVL<>(5);
+        // arbol.insertar(56);
+        // arbol.insertar(8);
+        // arbol.insertar(91);
+        // arbol.insertar(205);
+        // arbol.insertar(512);
+        // arbol.insertar(30);
+        // arbol.insertar(602);
+        // arbol.inOrden();
+
+        ArbolAVL<String> arbol2 = new ArbolAVL<>("Hola");
+        arbol2.insertar("Mundo");
+        arbol2.insertar("AVL");
+        arbol2.insertar("Arbol");
+        arbol2.insertar("Balanceado");
+        arbol2.buscar("AVL");
+        System.out.println("InOrden");
+        arbol2.inOrden();
+        arbol2.buscar("AVL");
     }
 }
