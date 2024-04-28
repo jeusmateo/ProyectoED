@@ -12,7 +12,7 @@ public class BusquedaBinaria {
             int medio = (inicio + fin) / 2;
             if (corpusOrdenado.get(medio).equals(elemento)) {
                 return true;
-            } else if (corpusOrdenado.get(medio).compareTo(elemento) < 0) {
+            } else if (corpusOrdenado.get(medio).compareTo(elemento) < 0) { 
                 inicio = medio + 1;
             } else {
                 fin = medio - 1;

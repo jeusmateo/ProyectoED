@@ -1,4 +1,4 @@
-package ProyectoED;
+package ProyectoED.Arboles.ArbolABB;
 
 public class NodoBin {
     private String dato;

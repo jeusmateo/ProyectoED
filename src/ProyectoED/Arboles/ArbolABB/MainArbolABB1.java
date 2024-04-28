@@ -1,4 +1,4 @@
-package ProyectoED;
+package ProyectoED.Arboles.ArbolABB;
 
 import java.util.ArrayList;
 
