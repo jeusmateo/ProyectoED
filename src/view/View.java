@@ -100,7 +100,7 @@ public class View extends javax.swing.JFrame {
         MergeSort<String> ms = new MergeSort<>();
         QuickSortMario qs = new QuickSortMario();
         MezclaHomogenea mezclaH = new MezclaHomogenea();
-        //ArbolABB1 arbol = new ArbolABB1();
+        ArbolABB1 arbol = new ArbolABB1();
 
         //burbuja
         bburbuja.setArreglo(new ArrayList<>(PALABRAS));
@@ -159,14 +159,12 @@ public class View extends javax.swing.JFrame {
             }
 
         //abb
-        // Crear una instancia del árbol
-        
-
-        // inicio = System.currentTimeMillis();
-        // arbol.insertarCorpus(new ArrayList<>(PALABRAS));
-        // arbol.buscar(palabra);
-        // fin = System.currentTimeMillis();
-        // abb = fin - inicio;
+       
+        inicio = System.currentTimeMillis();
+        arbol.insertarCorpus(new ArrayList<>(PALABRAS));
+        arbol.buscar(palabra);
+        fin = System.currentTimeMillis();
+        abb = fin - inicio;
 
         //AVL
         ArbolAVL<String> arbolAvl = new ArbolAVL<>(PALABRAS.get(0));
@@ -198,9 +196,9 @@ public class View extends javax.swing.JFrame {
         System.out.println("Mezcla homogenea: " + mezcla + " ms");
 
         //arboles
-        // System.out.println("Arboles Binarios de Busqueda: " + abb + " ms");
-        // System.out.println("Arboles AVL: " + avl + " ms");
-        // System.out.println("Arboles B: " + ab + " ms");
+        System.out.println("Arboles Binarios de Busqueda: " + abb + " ms");
+        System.out.println("Arboles AVL: " + avl + " ms");
+        System.out.println("Arboles B: " + ab + " ms");
     }//GEN-LAST:event_btnSearchActionPerformed
 
     /**
