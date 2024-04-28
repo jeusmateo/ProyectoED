@@ -99,7 +99,7 @@ public class View extends javax.swing.JFrame {
         ShellSort<String> ss = new ShellSort<>(new ArrayList<>(PALABRAS));
         MergeSort<String> ms = new MergeSort<>();
         QuickSortMario qs = new QuickSortMario();
-        MezclaHomogenea mh = new MezclaHomogenea();
+        // MezclaHomogenea mh = new MezclaHomogenea();
 
         //burbuja
         bburbuja.setArreglo(new ArrayList<>(PALABRAS));
@@ -142,12 +142,12 @@ public class View extends javax.swing.JFrame {
         mergesort = fin - inicio;
 
         //mezcla homogenea
-        inicio = System.currentTimeMillis();
-        try {
-            mh.mezclaEquilibradaMetodo("medline_CDs.txt", "archivoParticion1.txt", "archivoParticion2.txt", "archivoParticion3.txt");
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+        // inicio = System.currentTimeMillis();
+        // try {
+        //     mh.mezclaEquilibradaMetodo("medline_CDs.txt", "archivoParticion1.txt", "archivoParticion2.txt", "archivoParticion3.txt");
+        // } catch (IOException e) {
+        //     e.printStackTrace();
+        // }
 
         //abb
         ArbolABB1<String> abb1 = new ArbolABB1<>(PALABRAS.get(0));

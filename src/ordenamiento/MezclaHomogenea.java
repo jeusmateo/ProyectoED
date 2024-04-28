@@ -234,15 +234,15 @@ public class MezclaHomogenea {
     }
 
     public static void main(String[] args) {
-        MezclaHomogenea particionador = new MezclaHomogenea();
-        try {
-            particionador.mezclaEquilibradaMetodo(
-                    "medline_CDs.txt", "archivoParticion1.txt",
-                    "archivoParticion2.txt", "archivoParticion3.txt");
-        } catch (Exception e) {
-            System.out.println("Ocurrió un error " + e.getMessage());
-            // para tener un mejor control de los errores
-            e.printStackTrace();
-        }
+        // MezclaHomogenea particionador = new MezclaHomogenea();
+        // try {
+        //     particionador.mezclaEquilibradaMetodo(
+        //             "medline_CDs.txt", "archivoParticion1.txt",
+        //             "archivoParticion2.txt", "archivoParticion3.txt");
+        // } catch (Exception e) {
+        //     System.out.println("Ocurrió un error " + e.getMessage());
+        //     // para tener un mejor control de los errores
+        //     e.printStackTrace();
+        // }
     }
 }
