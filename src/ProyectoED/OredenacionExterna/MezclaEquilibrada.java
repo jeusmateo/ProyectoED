@@ -1,141 +1,35 @@
 package ProyectoED.OredenacionExterna;
 
- import java.io.*;
-
- /**
-  * @author Mariana
-  * @version 31/Diciembre/2010
-  */
+ import java.io.*; //Importar las clases necesarias para la manipulacion de archivos
+import java.util.ArrayList;
 
  public class MezclaEquilibrada {
- 
-   InputStreamReader ISR = new InputStreamReader(System.in);
-   BufferedReader BR = new BufferedReader(ISR);
- 
-   public void crearArchivoDatos(String nombreArchivo) throws Exception {
- 
-     String nombre = null;
- 
-     //Declaración del objeto asociado a la creación o apertura de un archivo
-     DataOutputStream dos = null;
- 
-     //El siguiente código abre o crea un archivo
-     try {
-       dos = new DataOutputStream(new FileOutputStream(nombreArchivo, false));
-     } catch (IOException e) {
-       System.out.println("Error de Apertura o Creacion");
-     }
- 
-     //El siguiente bloque escribe un registro en el archivo abierto o creado
-     try {
-       do {
-         System.out.println("Nombre: [Solo presiona Enter para terminar de capturar nombres]");
-         nombre = BR.readLine();
-         if (!nombre.equalsIgnoreCase("")) {
-           dos.writeUTF(nombre);
-         }
- 
-       } while (!nombre.equalsIgnoreCase(""));
-     } catch (IOException e) {
-       System.out.println("Error de escritura");
-     } finally {
-       dos.close();
-     }
-   }
- 
-   //Metodo para desplegar el contenido del archivo que se creó o se abrió en las líneas anteriores
-   public void desplegar(String nombreArchivo) throws Exception {
-     String nombre = null;
- 
-     DataInputStream dis = null;
-     int index = 0;
-     //DataOutputStream dos = null;
-     try {
-       dis = new DataInputStream(new FileInputStream(nombreArchivo));
-       while (dis.available() != 0) {
-         nombre = dis.readUTF();
-         System.out.println(++index + ") " + nombre);
+
+   public void crearArchivoDatos(String nombreArchivo, ArrayList<String> nombres) throws Exception {
+       DataOutputStream dos = null;
+       try {
+           dos = new DataOutputStream(new FileOutputStream(nombreArchivo, false));
+           for (String nombre : nombres) {
+               if (!nombre.isEmpty()) {  // Verifica que el nombre no esté vacío
+                   dos.writeUTF(nombre);
+               }
+           }
+       } catch (IOException e) {
+           System.out.println("Error de Apertura o Creacion");
+       } finally {
+           if (dos != null) {
+               dos.close();
+           }
        }
-     } catch (FileNotFoundException e) {
-       System.out.println("Error de Apertura-Lectura archivo: " + nombreArchivo);
-     } catch (IOException e) {
-       System.out.println("Error de lectura archivo: " + nombreArchivo);
-     } finally {
-       if (dis != null) {
-         dis.close();
-       }
-     }
-   }
- 
-   //Metodo para verificar el correcto orden en el archivo
-   public void verificarOrdenamiento(String nombreArchivo) throws IOException {
-     String actual = null;
-     String anterior = null;
- 
-     //Variable booleana para indicar el estado del archivo
-     boolean estaOrdenado = true;
- 
-     DataInputStream dis = null;
-     //DataOutputStream dos = null;
-     try {
-       dis = new DataInputStream(new FileInputStream(nombreArchivo));
- 
-       //Ciclo para verificar el orden del archivo
-       //Comenzar siempre por averiguar si hay datos dentro del archivo
-       while (dis.available() != 0) {
-         //En un primer momento los indices quedan a la par
-         anterior = actual;
-         //actual se encargara de ir "jalando" a anterior
-         actual = dis.readUTF();
- 
-         //En la segunda vuelta, el indice anterior ocupa la posicion
-         //del indice actual y a partir de aqui, el indice actual
-         //se despega del anterior
-         if (anterior == null) {
-           anterior = actual;
-         }
- 
-         System.out.println(actual);
- 
-         //Comparacion de los datos contenidos en actual y anterior
-         //Condicion: Si el dato anterior es lexicograficamente mayor al actual
-         if (anterior.compareTo(actual) > 0) {
-           System.out.println("Error en el ordenamiento");
-           //Actualizacion de la variable booleana que indica el estado del archivo
-           estaOrdenado = false;
-           //Interrupcion del ciclo
-           break;
-         }
-       }
- 
-       //Si la variable booleana conservo su valor original de true, desplegar un mensaje
-       if (estaOrdenado) {
-         System.out.println("EL ARCHIVO ESTA ORDENADO");
-       }
- 
-     } catch (FileNotFoundException e) {
-       System.out.println("Error de Apertura-Lectura archivo: " + nombreArchivo);
-     } catch (IOException e) {
-       System.out.println("Error de lectura archivo: " + nombreArchivo);
-     } finally {
-       //Verificar siempre que el archivo este abierto antes de intentar cerrarlo
-       if (dis != null) {
-         dis.close();
-       }
- 
-     }
    }
  
    //Metodo para generar particiones de secuencias
    public boolean particion(String nombreArchivo, String archivo1, String archivo2) {
  
-     //Se utilizara una logica similar a la del metodo de verificar orden
-     //por lo que los indices son declarados de la misma manera
      String actual = null;
      String anterior = null;
  
      //Variable para controlar el indice del archivo al cual se va a escribir.
-     //El archivo en cuestion es declarado dentro de un arreglo de archivos
      int indexOutputStream = 0;
  
      //Variable que determina si existe un cambio de secuencia en el ordenamiento
@@ -154,8 +48,7 @@ package ProyectoED.OredenacionExterna;
  
        //Primero, verifica si existen datos en el archivo que se va a leer
        while (dis.available() != 0) {
-         //Utiliza la misma logica para las variables que almacenan los datos
-         //que en el metodo de la verificacion del orden
+
          anterior = actual;
          actual = dis.readUTF();
  
@@ -272,11 +165,8 @@ package ProyectoED.OredenacionExterna;
          }
        }
  
-       // purgar los dos archivos en caso de que alguna secuencia
-       // haya quedado sola al final del archivo.
-       // Para salir del while anterior alguno de los 2 archivos
-       // debio terminar, por lo que a lo mas uno de los dos whiles
-       // siguientes se ejecutara
+       // purgar los dos archivos en caso de que alguna secuencia haya quedado sola al final del archivo.
+       // Para salir del while anterior alguno de los 2 archivos debio terminar, por lo que a lo mas uno de los dos whiles siguientes se ejecutara
        if (!finArchivo[0]) {
          dos.writeUTF(actual[0]);
          while (dis[0].available() != 0) {
@@ -316,11 +206,6 @@ package ProyectoED.OredenacionExterna;
    }
  
    public void ordenar(String nombreArchivo) {
-     /*No es recomendable utilizar nombres fijos para los archivos,
-      *pues se podria sobreescribir accidentalmente otro archivo con
-      *el mismo nombre, sin embargo, para fines de este proyecto
-      *se utilizaron nombres fijos
-      */
      int index = 0;
      while (particion(nombreArchivo, "archivo1.txt", "archivo2.txt")) {
        //Imprime el numero de particiones-fusiones que le llevo a los
@@ -329,27 +214,61 @@ package ProyectoED.OredenacionExterna;
        fusion(nombreArchivo, "archivo1.txt", "archivo2.txt");
      }
    }
- 
-   public static void main(String[] args) throws Exception {
-     InputStreamReader isr = new InputStreamReader(System.in);
-     BufferedReader br = new BufferedReader(isr);
- 
-     String nombreArchivo = null;
- 
-     MezclaEquilibrada mezcla1 = new MezclaEquilibrada();
- 
-     //Solicita el nombre de un archivo para poder ordenarlo
-     System.out.println("Nombre del archivo:");
-     nombreArchivo = br.readLine();
- 
-     //Despliega el contenido del archivo sin ordenar
-     mezcla1.desplegar(nombreArchivo);
- 
-     //Ordena el contenido del archivo
-     mezcla1.ordenar(nombreArchivo);
- 
-     //Verifica que el archivo este ordenado correctamente
-     mezcla1.verificarOrdenamiento(nombreArchivo);
- 
-   }
+
+  public ArrayList<String> ArchivoToArrayList(String nombreArchivo) throws Exception {
+    ArrayList<String> lista = new ArrayList<>();
+    DataInputStream dis = null;
+
+    try {
+        dis = new DataInputStream(new FileInputStream(nombreArchivo));
+        while (dis.available() != 0) {
+            String nombre = dis.readUTF();
+            lista.add(nombre);
+        }
+    } catch (FileNotFoundException e) {
+        System.out.println("Error de Apertura-Lectura archivo: " + nombreArchivo);
+    } catch (IOException e) {
+        System.out.println("Error de lectura archivo: " + nombreArchivo);
+    } finally {
+        if (dis != null) {
+            dis.close();
+        }
+    }
+    return lista;
+}
+  //  public static void main(String[] args) {
+
+  //         try {
+  //             MezclaEquilibrada mezcla = new MezclaEquilibrada();
+  //             ArrayList<String> nombres = new ArrayList<>();
+  //             nombres.add("bob");
+  //             nombres.add("brayan");
+  //             nombres.add("clara");
+  //             nombres.add("chicharito");
+  //             nombres.add("daniel");
+  //             nombres.add("david");
+  //             nombres.add("diana");
+  //             nombres.add("daniela");
+  //             nombres.add("ana");
+  //             nombres.add("anahi");
+  //             nombres.add("laura");
+      
+  //             String nombreArchivo = "nombres.txt";
+  //             mezcla.crearArchivoDatos(nombreArchivo, nombres);
+
+  //             // Ordenar el archivo
+  //             mezcla.ordenar(nombreArchivo);
+  //             // Verificar y mostrar el contenido del archivo ordenado
+  //             System.out.println("Contenido del archivo después de ordenar:");
+  //             //mezcla.desplegar(nombreArchivo);
+  //             ArrayList<String> lista = mezcla.ArchivoToArrayList(nombreArchivo);
+  //             for (String nombre : lista) {
+  //                 System.out.println(nombre);
+  //             }
+  
+  //         } catch (Exception e) {
+  //             e.printStackTrace();
+  //         }
+  // }
+
  }
