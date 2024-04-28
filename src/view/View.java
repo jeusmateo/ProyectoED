@@ -28,7 +28,7 @@ import ordenamiento.ShellSort;
 public class View extends javax.swing.JFrame {
 
     final LectordeMedline LECTOR = new LectordeMedline();
-    final List<String> PALABRAS = LectordeMedline.readAndProcessFile("medline_CDs.txt");
+    final List<String> PALABRAS = LectordeMedline.readAndProcessFile("src/medline_CDs.txt");
 
     /**
      * Creates new form View
@@ -99,7 +99,8 @@ public class View extends javax.swing.JFrame {
         ShellSort<String> ss = new ShellSort<>(new ArrayList<>(PALABRAS));
         MergeSort<String> ms = new MergeSort<>();
         QuickSortMario qs = new QuickSortMario();
-        MezclaHomogenea mh = new MezclaHomogenea();
+        MezclaHomogenea mezclaH = new MezclaHomogenea();
+        //ArbolABB1 arbol = new ArbolABB1();
 
         //burbuja
         bburbuja.setArreglo(new ArrayList<>(PALABRAS));
@@ -142,22 +143,30 @@ public class View extends javax.swing.JFrame {
         mergesort = fin - inicio;
 
         //mezcla homogenea
-        inicio = System.currentTimeMillis();
         try {
-            mh.mezclaEquilibradaMetodo("medline_CDs.txt", "archivoParticion1.txt", "archivoParticion2.txt", "archivoParticion3.txt");
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+            String nombreArchivo = "newMedLine.txt";
+            mezclaH.crearArchivoDatos(nombreArchivo,  new ArrayList<>(PALABRAS));
+            inicio = System.currentTimeMillis();
+            // Ordenar el archivo
+            mezclaH.ordenar(nombreArchivo);
+            // contenido del archivo ordenado
+            ArrayList<String> listaOrdenada = mezclaH.ArchivoToArrayList(nombreArchivo);
+            BusquedaBinaria.busquedaBinaria(listaOrdenada, palabra);
+            fin = System.currentTimeMillis();
+            mezcla = fin - inicio;
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
 
         //abb
-        ArbolABB1<String> abb1 = new ArbolABB1<>(PALABRAS.get(0));
-        inicio = System.currentTimeMillis();
-        for(int i = 1; i < PALABRAS.size(); i++){
-            abb1.insertar(PALABRAS.get(i));
-        }
-        abb1.buscar(palabra);
-        fin = System.currentTimeMillis();
-        abb = fin - inicio;
+        // Crear una instancia del árbol
+        
+
+        // inicio = System.currentTimeMillis();
+        // arbol.insertarCorpus(new ArrayList<>(PALABRAS));
+        // arbol.buscar(palabra);
+        // fin = System.currentTimeMillis();
+        // abb = fin - inicio;
 
         //AVL
         ArbolAVL<String> arbolAvl = new ArbolAVL<>(PALABRAS.get(0));
@@ -189,9 +198,9 @@ public class View extends javax.swing.JFrame {
         System.out.println("Mezcla homogenea: " + mezcla + " ms");
 
         //arboles
-        System.out.println("Arboles Binarios de Busqueda: " + abb + " ms");
-        System.out.println("Arboles AVL: " + avl + " ms");
-        System.out.println("Arboles B: " + ab + " ms");
+        // System.out.println("Arboles Binarios de Busqueda: " + abb + " ms");
+        // System.out.println("Arboles AVL: " + avl + " ms");
+        // System.out.println("Arboles B: " + ab + " ms");
     }//GEN-LAST:event_btnSearchActionPerformed
 
     /**

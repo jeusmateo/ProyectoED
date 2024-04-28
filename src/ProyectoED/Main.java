@@ -17,12 +17,9 @@ public class Main {
      * @param args the command line arguments
      */
     public static void main(String[] args) {
-        // TODO code application logic here
         View v = new View();
         v.setVisible(true);
-        
-    
-        System.out.println("Hola");
+
 
         //tokenizador del corpus y meterlo a un arraylist
         //convenrtir arraylist toArray, para que sea mas rapido

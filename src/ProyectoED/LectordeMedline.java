@@ -35,15 +35,4 @@ public class LectordeMedline {
 
         return words;
     }
-
-    public static void main(String[] args) {
-        String filePath = "C:\\Users\\jeusm.MASTER\\Downloads\\medline_CDs.txt"; // Ruta de tu archivo de texto Medline
-        ArrayList<String> words = readAndProcessFile(filePath);
-
-        System.out.println(words.size());
-        // Imprimir las palabras almacenadas en el ArrayList
-        //for (String word : words) {
-            //System.out.println(word);
-        //}
-    }
 }

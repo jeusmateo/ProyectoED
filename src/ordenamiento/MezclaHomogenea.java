@@ -1,248 +1,260 @@
 package ordenamiento;
 
-import java.io.BufferedReader;
-import java.io.BufferedWriter;
-import java.io.FileReader;
-import java.io.FileWriter;
-import java.io.IOException;
-import java.util.Scanner;
+import java.io.*; //Importar las clases necesarias para la manipulacion de archivos
+import java.util.ArrayList;
 
-public class MezclaHomogenea {
-    public int PART;
+ public class MezclaHomogenea {
 
-    public void particionInicial(String F, String F2, String F3, int PART) throws IOException {
-        // Abrir el archivo F para lectura
-        BufferedReader br = new BufferedReader(new FileReader(F));
+   public void crearArchivoDatos(String nombreArchivo, ArrayList<String> nombres) throws Exception {
+       DataOutputStream dos = null;
+       try {
+           dos = new DataOutputStream(new FileOutputStream(nombreArchivo, false));
+           for (String nombre : nombres) {
+               if (!nombre.isEmpty()) {  // Verifica que el nombre no esté vacío
+                   dos.writeUTF(nombre);
+               }
+           }
+       } catch (IOException e) {
+           System.out.println("Error de Apertura o Creacion");
+       } finally {
+           if (dos != null) {
+               dos.close();
+           }
+       }
+   }
+ 
+   //Metodo para generar particiones de secuencias
+   public boolean particion(String nombreArchivo, String archivo1, String archivo2) {
+ 
+     String actual = null;
+     String anterior = null;
+ 
+     //Variable para controlar el indice del archivo al cual se va a escribir.
+     int indexOutputStream = 0;
+ 
+     //Variable que determina si existe un cambio de secuencia en el ordenamiento
+     boolean hayCambioDeSecuencia = false;
+ 
+     //Declaracion de los objetos asociados a los archivos y del arreglo de archivos
+     //que sirven para las particiones
+     DataOutputStream dos[] = new DataOutputStream[2];
+     DataInputStream dis = null;
+ 
+     try {
+       //Abre o crea los archivos
+       dos[0] = new DataOutputStream(new FileOutputStream(archivo1, false));
+       dos[1] = new DataOutputStream(new FileOutputStream(archivo2, false));
+       dis = new DataInputStream(new FileInputStream(nombreArchivo));
+ 
+       while (dis.available() != 0) { //Mientras existan datos en el archivo
 
-        // Abrir los archivos F2 y F3 para escritura
-        BufferedWriter bwF2 = new BufferedWriter(new FileWriter(F2));
-        BufferedWriter bwF3 = new BufferedWriter(new FileWriter(F3));
+         anterior = actual; //Almacenar el dato anterior
+         actual = dis.readUTF(); //Leer el dato actual
+ 
+         if (anterior == null) { //Primera vez: inicializar con la primera palabra
+           anterior = actual;
+         }
 
-        // Leer el primer valor de F y preparar variables
-        String linea = br.readLine();
-        if (linea == null) { // Terminar si el archivo está vacío
-            br.close();
-            bwF2.close();
-            bwF3.close();
-            return;
+         //Cambio de secuencia. Manipulacion del indice del arreglo de archivos
+         if (anterior.compareTo(actual) > 0) {
+           indexOutputStream = indexOutputStream == 0 ? 1 : 0;
+           //Actualizacion de la variable booleana, esto indica la existencia de un cambio de secuencia
+           hayCambioDeSecuencia = true;
+         }
+ 
+         dos[indexOutputStream].writeUTF(actual); //Escribir el dato en el archivo correspondiente
+       }
+     } catch (FileNotFoundException e) {
+       System.out.println("Error lectura/escritura");
+     } catch (IOException e) {
+       System.out.println("Error en la creacion o apertura del archivo 1");
+     } finally {
+       //Verificar para cada archivo, que efectivamente se encuentre abierto
+       //antes de cerrarlo
+       try {
+         if (dis != null) {
+           dis.close();
+         }
+ 
+         if (dos[0] != null) {
+           dos[0].close();
+         }
+ 
+         if (dos[1] != null) {
+           dos[1].close();
+         }
+       } catch (IOException ex) {
+         System.out.println("Error al cerrar archivos");
+       }
+     }
+     //El valor retornado sirve para determinar cuando existe una particion
+     return hayCambioDeSecuencia;
+   }
+ 
+   //Metodo de fusion de los datos obtenidos en el metodo de particion
+   public void fusion(String nombreArchivo, String archivo1, String archivo2) {
+     //Variables para almacenar los datos de los archivos que contienen las particiones
+     String[] actual = new String[2];
+     String[] anterior = new String[2];
+     boolean[] finArchivo = new boolean[2];
+     int indexArchivo = 0;
+ 
+     //Creacion de los objetos asociados a los archivos
+     DataOutputStream dos = null;
+     DataInputStream dis[] = new DataInputStream[2];
+ 
+     try {
+       //Abre o crea los archivos
+       dis[0] = new DataInputStream(new FileInputStream(archivo1));
+       dis[1] = new DataInputStream(new FileInputStream(archivo2));
+       dos = new DataOutputStream(new FileOutputStream(nombreArchivo, false));
+ 
+       //Condicion principal: debe haber datos en ambos archivos de lectura
+       while (dis[0].available() != 0 && dis[1].available() != 0) { //Mientras existan datos en los archivos
+ 
+         // 1era vez: inicializar con la primera palabra de cada archivo
+         if (anterior[0] == null && anterior[1] == null) { 
+           anterior[0] = actual[0] = dis[0].readUTF(); //Leer la primera palabra del archivo 1
+           anterior[1] = actual[1] = dis[1].readUTF(); //Leer la primera palabra del archivo 2
+         }
+ 
+         // al inicio del procesamiento de dos secuencias, anterior y actual apuntan a la primer palabra de cada secuencia.
+         anterior[0] = actual[0];
+         anterior[1] = actual[1];
+ 
+         // mezclamos las dos secuencias hasta que una acaba
+         while (anterior[0].compareTo(actual[0]) <= 0 && anterior[1].compareTo(actual[1]) <= 0) { //Mientras el dato actual sea mayor o igual al dato anterior
+            indexArchivo = (actual[0].compareTo(actual[1]) <= 0) ? 0 : 1; 
+            dos.writeUTF(actual[indexArchivo]); //Escribir el dato actual
+            anterior[indexArchivo] = actual[indexArchivo]; //Actualizar el dato anterior
+           
+            if (dis[indexArchivo].available() != 0) {  //si existan datos en el archivo
+              actual[indexArchivo] = dis[indexArchivo].readUTF(); //Leer el dato actual
+            } else {
+              finArchivo[indexArchivo] = true;
+              break;
+            }
+         } // fin del while cuando una secuencia acaba
+ 
+         // en este punto indexArchivo nos dice que archivo causo que salieramos del while anterior, por lo que tenemos que purgar el otro archivo
+         indexArchivo = indexArchivo == 0 ? 1 : 0;
+ 
+         while (anterior[indexArchivo].compareTo(actual[indexArchivo]) <= 0) { //Mientras el dato actual sea mayor o igual al dato anterior
+           dos.writeUTF(actual[indexArchivo]); //Escribir el dato actual
+           anterior[indexArchivo] = actual[indexArchivo]; //Actualizar el dato anterior
+           if (dis[indexArchivo].available() != 0) { //Mientras existan datos en el archivo
+             actual[indexArchivo] = dis[indexArchivo].readUTF(); //Leer el dato actual
+           } else {
+             finArchivo[indexArchivo] = true; //Si no hay datos, marcar el fin del archivo
+             break;
+           }
+         }
+       }
+ 
+       // purgar los dos archivos en caso de que alguna secuencia haya quedado sola al final del archivo.
+       // Para salir del while anterior alguno de los 2 archivos debio terminar, por lo que a lo mas uno de los dos whiles siguientes se ejecutara
+       if (!finArchivo[0]) { // si el archivo 1 no ha terminado
+         dos.writeUTF(actual[0]); //Escribir el dato actual
+         while (dis[0].available() != 0) { //Mientras existan datos en el archivo
+           dos.writeUTF(dis[0].readUTF()); //Escribir el dato en el archivo
+         }
+       }
+ 
+       if (!finArchivo[1]) { // si el archivo 2 no ha terminado
+         dos.writeUTF(actual[1]);
+         while (dis[1].available() != 0) {
+           dos.writeUTF(dis[1].readUTF());
+         }
+       }
+     } catch (FileNotFoundException e) {
+       System.err.println(e);
+     } catch (IOException e) {
+       System.err.println(e);
+     } finally {
+       //Verificar para cada archivo, que efectivamente se encuentre abierto
+       //antes de cerrarlo
+       try {
+         if (dis[0] != null) {
+           dis[0].close();
+         }
+ 
+         if (dis[1] != null) {
+           dis[1].close();
+         }
+ 
+         if (dos != null) {
+           dos.close();
+         }
+       } catch (IOException ex) {
+         System.out.println("Error al cerrar archivos");
+       }
+     }
+   }
+ 
+   public void ordenar(String nombreArchivo) {
+     int index = 0;
+     while (particion(nombreArchivo, "archivo1.txt", "archivo2.txt")) { //Mientras existan particiones
+       //Imprime el numero de particiones-fusiones que le llevo a los
+       //metodos de particion y fusion el ordenar el archivo
+       System.out.println("Fusion " + ++index);
+       fusion(nombreArchivo, "archivo1.txt", "archivo2.txt");
+     }
+   }
+
+  public ArrayList<String> ArchivoToArrayList(String nombreArchivo) throws Exception {
+    ArrayList<String> lista = new ArrayList<>();
+    DataInputStream dis = null;
+
+    try {
+        dis = new DataInputStream(new FileInputStream(nombreArchivo));
+        while (dis.available() != 0) {
+            String nombre = dis.readUTF();
+            lista.add(nombre);
         }
-
-        int R = Integer.parseInt(linea);
-        boolean BAND = true; // Verdadero indica escribir en F2, falso en F3
-        int AUX = R; // Almacenar el último valor leído
-
-        // Escribir el primer valor en F2
-        bwF2.write(R + "\n");
-
-        // Leer el resto de los valores del archivo F
-        while ((linea = br.readLine()) != null) {
-            R = Integer.parseInt(linea); // Convertir el valor leído a entero
-
-            if (R >= AUX) {
-                AUX = R;
-                if (BAND) {
-                    bwF2.write(R + "\n");
-                } else {
-                    bwF3.write(R + "\n");
-                }
-            } else {
-                AUX = R;
-                if (BAND) {
-                    bwF3.write(R + "\n");
-                    BAND = false;
-                } else {
-                    bwF2.write(R + "\n");
-                    BAND = true;
-                }
-            }
-        }
-
-        // Cerrar los archivos
-        br.close();
-        bwF2.close();
-        bwF3.close();
-    }
-
-    public void mezclaEquilibradaMetodo(String F, String F1, String F2, String F3) throws IOException {
-        boolean band;
-        String inLineF1 = "", inLineF3 = "";
-        particionInicial(F, F2, F3);
-        band = true;
-        do {
-            if (band) {
-                particionFusion(F2, F3, F, F1);
-                band = false;
-            } else {
-                particionFusion(F, F1, F2, F3);
-                band = true;
-            }
-            FileReader fr1 = new FileReader(F1);
-            BufferedReader br1 = new BufferedReader(fr1);
-            FileReader fr3 = new FileReader(F3);
-            BufferedReader br3 = new BufferedReader(fr3);
-            inLineF1 = br1.readLine();
-            inLineF3 = br3.readLine();
-            br1.close();
-            br3.close();
-        } while (inLineF1 != null || inLineF3 != null);
-    }
-
-    // EL ALGORITMO PRODUCE LA PARTICION Y LA FUSIØN DE LOS ARCHIVOS FA Y FB, EN LOS
-    // ARCHIVOS FC y FD
-    public void particionFusion(String FA, String FB, String FC, String FD) throws IOException {
-        int r1 = 0, r2 = 0, aux;
-        boolean ban1, ban2, ban3;
-
-        Scanner fa = new Scanner(FA);
-        Scanner fb = new Scanner(FB);
-        FileWriter fc = new FileWriter(FC);
-        FileWriter fd = new FileWriter(FD);
-
-        ban1 = ban2 = ban3 = true;
-        aux = Integer.MIN_VALUE; // cambiar por Integer.MIN_VALUE si no rompe nada
-
-        while ((fa.hasNextLine() || ban1 == false) && (fb.hasNextLine() || ban2 == false)) {
-            if (ban1 == true) {
-                r1 = fa.nextInt();
-                ban1 = false;
-            }
-            if (ban2 == true) {
-                r2 = fb.nextInt();
-                ban2 = false;
-            }
-
-            // 4.5
-            if (r1 < r2) {
-                // 4.5.1
-                if (r1 >= aux) {
-                    // 4.5.1.1
-                    if (ban3 == true) {
-                        fc.append(r1 + " ");
-                    } else {
-                        fd.append(r1 + " ");
-                    }
-                    // 4.5.1.2 end
-                    ban1 = true;
-                    aux = r1;
-                } else {
-                    // 4.5.1.3
-                    if (ban3 == true) {
-                        fc.append(r2 + " ");
-                        ban3 = false;
-                    } else {
-                        fd.append(r2 + " ");
-                        ban3 = true;
-                    }
-                    // 4.5.1.4 end
-                    ban2 = true;
-                    aux = Integer.MIN_VALUE;
-                }
-                // 4.5.2 end
-            } else {
-                // 4.5.3
-                if (r2 >= aux) {
-                    // 4.5.3.1
-                    if (ban3 == true) {
-                        fc.append(r2 + " ");
-                    } else {
-                        fd.append(r2 + " ");
-                    }
-                    // 4.5.3.2 end
-                    ban2 = true;
-                    aux = r2;
-                } else {
-                    // 4.5.3.3
-                    if (ban3 == true) {
-                        fc.append(r1 + " ");
-                        ban3 = false;
-                    } else {
-                        fd.append(r1 + " ");
-                        ban3 = true;
-                    }
-                    // 4.5.3.4 END
-                    ban1 = true;
-                    aux = Integer.MIN_VALUE;
-                }
-                // 4.5.4 END
-            }
-            // 4.6 END
-        } // 5 END
-
-        // 6
-        if (ban1 == false) {
-            // 6.1
-            if (ban3 == true) {
-                fc.append(r1 + " ");
-                // 6.1.1
-                while (fa.hasNextLine()) {
-                    r1 = fa.nextInt();
-                    fc.append(r1 + " ");
-                }
-                // 6.1.2 END
-            } else {
-                fd.append(r1 + " ");
-                // 6.1.3
-                while (fa.hasNextLine()) {
-                    r1 = fa.nextInt();
-                    fd.append(r1 + " ");
-                }
-                // 6.1.4 END
-            }
-            // 6.2 END
-        }
-        // 7 END
-
-        // 8
-        if (ban2 == false) {
-            // 8.1
-            if (ban3 == true) {
-                fc.append(r2 + " ");
-                // 8.1.1
-                while (fb.hasNextLine()) {
-                    r2 = fb.nextInt();
-                    fc.append(r2 + " ");
-                }
-                // 8.1.2 END
-            } else {
-                fd.append(r2 + " ");
-                // 8.1.3
-                while (fb.hasNextLine()) {
-                    r2 = fb.nextInt();
-                    fd.append(r2 + " ");
-                }
-                // 8.1.4 END
-            }
-            // 8.2 END
-        }
-        // 9 END
-
-        // 10
-        fa.close();
-        fb.close();
-        fc.close();
-        fd.close();
-    }
-
-    public void particionInicial(String F, String F2, String F3) throws IOException {
-        int aux = 0, r = 0;
-        boolean band;
-        FileReader fr = new FileReader(F);
-        BufferedReader br = new BufferedReader(fr);
-
-        // byscar la forma optima para escribir salida xdd
-
-    }
-
-    public static void main(String[] args) {
-        MezclaHomogenea particionador = new MezclaHomogenea();
-        try {
-            particionador.mezclaEquilibradaMetodo(
-                    "medline_CDs.txt", "archivoParticion1.txt",
-                    "archivoParticion2.txt", "archivoParticion3.txt");
-        } catch (Exception e) {
-            System.out.println("Ocurrió un error " + e.getMessage());
-            // para tener un mejor control de los errores
-            e.printStackTrace();
+    } catch (FileNotFoundException e) {
+        System.out.println("Error de Apertura-Lectura archivo: " + nombreArchivo);
+    } catch (IOException e) {
+        System.out.println("Error de lectura archivo: " + nombreArchivo);
+    } finally {
+        if (dis != null) {
+            dis.close();
         }
     }
+    return lista;
 }
+  //  public static void main(String[] args) {
+
+  //         try {
+  //             MezclaEquilibrada mezcla = new MezclaEquilibrada();
+  //             ArrayList<String> nombres = new ArrayList<>();
+  //             nombres.add("bob");
+  //             nombres.add("brayan");
+  //             nombres.add("clara");
+  //             nombres.add("chicharito");
+  //             nombres.add("daniel");
+  //             nombres.add("david");
+  //             nombres.add("diana");
+  //             nombres.add("daniela");
+  //             nombres.add("ana");
+  //             nombres.add("anahi");
+  //             nombres.add("laura");
+      
+  //             String nombreArchivo = "nombres.txt";
+  //             mezcla.crearArchivoDatos(nombreArchivo, nombres);
+
+  //             // Ordenar el archivo
+  //             mezcla.ordenar(nombreArchivo);
+  //             // Verificar y mostrar el contenido del archivo ordenado
+  //             System.out.println("Contenido del archivo después de ordenar:");
+  //             //mezcla.desplegar(nombreArchivo);
+  //             ArrayList<String> lista = mezcla.ArchivoToArrayList(nombreArchivo);
+  //             for (String nombre : lista) {
+  //                 System.out.println(nombre);
+  //             }
+  
+  //         } catch (Exception e) {
+  //             e.printStackTrace();
+  //         }
+  // }
+
+ }
