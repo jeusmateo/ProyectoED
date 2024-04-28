@@ -1,6 +1,9 @@
-package ProyectoED;
+package arboles;
 
 import java.util.ArrayList;
+
+import ProyectoED.ItemNotFoundException;
+import ProyectoED.NodoBin;
 
 /**
  *

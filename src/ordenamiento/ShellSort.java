@@ -7,7 +7,6 @@ package ordenamiento;
 import java.util.ArrayList;
 import java.util.List;
 
-import ProyectoED.BusquedaBinaria;
 import ProyectoED.LectordeMedline;
 
 /**

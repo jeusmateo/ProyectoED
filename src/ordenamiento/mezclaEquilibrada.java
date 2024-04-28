@@ -1,4 +1,4 @@
-package ProyectoED;
+package ordenamiento;
 
 import java.io.BufferedReader;
 import java.io.BufferedWriter;

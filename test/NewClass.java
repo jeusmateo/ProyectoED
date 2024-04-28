@@ -3,10 +3,10 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
-import ProyectoED.BusquedaBinaria;
-import ProyectoED.Insercion;
 import ProyectoED.LectordeMedline;
-import avl.ArbolAVL;
+import arboles.ArbolAVL;
+import ordenamiento.BusquedaBinaria;
+import ordenamiento.Insercion;
 import ordenamiento.MergeSort;
 import ordenamiento.ShellSort;
 import ordenamiento.ShellSort2;

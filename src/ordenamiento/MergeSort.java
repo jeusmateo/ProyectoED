@@ -4,7 +4,6 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 
-import ProyectoED.BusquedaBinaria;
 import ProyectoED.LectordeMedline;
 
 public class MergeSort<T extends Comparable<T>> {

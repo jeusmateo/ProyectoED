@@ -4,11 +4,13 @@
  */
 package view;
 
-import ProyectoED.BusquedaBinaria;
 import ProyectoED.LectordeMedline;
-import avl.ArbolAVL;
+import arboles.ArbolAVL;
+
 import java.util.ArrayList;
 import java.util.List;
+
+import ordenamiento.BusquedaBinaria;
 import ordenamiento.MergeSort;
 import ordenamiento.ShellSort;
 
