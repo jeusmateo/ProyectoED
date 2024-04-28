@@ -5,7 +5,10 @@
  */
 package avl;
 
+import java.util.List;
+
 import ProyectoED.ItemNotFoundException;
+import ProyectoED.LectordeMedline;
 import ProyectoED.NodoBin;
 
 /**
@@ -270,15 +273,16 @@ public class ArbolAVL<T extends Comparable<T>> {
         // arbol.insertar(30);
         // arbol.insertar(602);
         // arbol.inOrden();
+        List<String> arr = LectordeMedline.readAndProcessFile("medline_CDs.txt");
 
-        ArbolAVL<String> arbol2 = new ArbolAVL<>("Hola");
-        arbol2.insertar("Mundo");
-        arbol2.insertar("AVL");
-        arbol2.insertar("Arbol");
-        arbol2.insertar("Balanceado");
-        arbol2.buscar("AVL");
-        System.out.println("InOrden");
-        arbol2.inOrden();
-        arbol2.buscar("AVL");
+        long start = System.currentTimeMillis();
+        ArbolAVL<String> avl = new ArbolAVL<>(arr.get(0));
+        for (int i = 1; i < arr.size(); i++)
+            avl.insertar(arr.get(i));
+        avl.buscar("encontrado2");
+        long finish = System.currentTimeMillis();
+        
+        System.out.println("Tiempo de ejecución: " + (finish - start) + " ms");
+
     }
 }

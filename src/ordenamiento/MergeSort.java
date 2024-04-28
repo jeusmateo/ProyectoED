@@ -4,6 +4,9 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 
+import ProyectoED.BusquedaBinaria;
+import ProyectoED.LectordeMedline;
+
 public class MergeSort<T extends Comparable<T>> {
 
     public List<T> ordenaMerge(List<T> L) {
@@ -43,22 +46,17 @@ public class MergeSort<T extends Comparable<T>> {
     }
 
     public static void main(String[] args) {
-        MergeSort<Integer> merge = new MergeSort<>();
-        List<Integer> lista = new ArrayList<>();
+        MergeSort<String> merge = new MergeSort<>();
+        List<String> lista = LectordeMedline.readAndProcessFile("medline_CDs.txt");
+        BusquedaBinaria busqueda = new BusquedaBinaria();
+        boolean encontrado = false;
 
-        Random rand = new Random();
-        for (int i = 0; i < 100000; i++){
-            lista.add(rand.nextInt());
-        }
-
-        System.out.println("Lista desordenada");
-        System.out.println(lista);
         long start = System.currentTimeMillis();
         lista = merge.ordenaMerge(lista);
+        encontrado = busqueda.busquedaBinaria(lista, "elemento2");
         long finish = System.currentTimeMillis();
-        long timeElapsed = finish - start;
-        System.out.println("Lista ordenada");
-        System.out.println(lista);
-        System.out.println("El tiempo total es de " + timeElapsed);
+        
+        System.out.println("Tiempo de ejecución: " + (finish - start) + " ms");
+        System.out.println("Encontrado: " + encontrado);
     }
 }
