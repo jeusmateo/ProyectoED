@@ -40,7 +40,6 @@ public class ArbolAVL<T extends Comparable<T>> {
     }
 
     public void insertarOrdenado(NodoAVL<T> n, T o) {
-        // if ((int) o < (int) n.getDato()) {
         if (o.compareTo(n.getDato()) < 0) {
             if (n.getIzq() == null) {
                 n.setIzq(new NodoAVL<>(o, null, null, n));
@@ -48,7 +47,6 @@ public class ArbolAVL<T extends Comparable<T>> {
             } else
                 insertarOrdenado((NodoAVL<T>) n.getIzq(), o);
         } else {
-            // if ((int) o > (int) n.getDato()) {
             if (o.compareTo(n.getDato()) > 0) {
                 if (n.getDer() == null) {
                     n.setDer(new NodoAVL<>(o, null, null, n));
@@ -77,11 +75,9 @@ public class ArbolAVL<T extends Comparable<T>> {
                 case 0:
                 case 1:
                     rotacionDD(nodo);
-                    // System.out.println("Rotación DD");
                     break;
                 case -1:
                     rotacionDI(nodo);
-                    // System.out.println("Rotación DI");
                     break;
             }
         } else {
@@ -89,11 +85,9 @@ public class ArbolAVL<T extends Comparable<T>> {
                 case 0:
                 case -1:
                     rotacionII(nodo);
-                    // System.out.println("Rotación II");
                     break;
                 case 1:
                     rotacionID(nodo);
-                    // System.out.println("Rotación ID");
                     break;
             }
         }
