@@ -6,5 +6,7 @@ Integrantes:
 - Bonilla Pech Russel Adrián
 
 ## Video ejecución de los algoritmos:
+Link: [Aquí](https://youtu.be/0nkL2dz7slk)
 
-Link: [https://youtu.be/eTCOvhbI2xw](https://youtu.be/eTCOvhbI2xw)
+## Explicación del código:
+Link: [Aquí](https://youtu.be/eTCOvhbI2xw)
