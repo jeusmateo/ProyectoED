@@ -4,7 +4,6 @@
  */
 package arboles;
 
-import Lec.LectorMed;
 import ProyectoED.LectordeMedline;
 
 import java.util.ArrayList;
