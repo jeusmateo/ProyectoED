@@ -10,7 +10,7 @@ package arboles;
  * @author jorge.reyes
  * @param <T>
  */
-public class NodoAVL<T> extends NodoBin<T> {
+public class NodoAVL<T> extends NodoBinAVL<T> {
     protected int fe;
     protected NodoAVL<T> padre;
 
@@ -21,11 +21,11 @@ public class NodoAVL<T> extends NodoBin<T> {
         super(dato);
     }
 
-    public NodoAVL(T dato, NodoBin<T> izq, NodoBin<T> der) {
+    public NodoAVL(T dato, NodoBinAVL<T> izq, NodoBinAVL<T> der) {
         super(dato, izq, der);
     }
 
-    public NodoAVL(T dato, NodoBin<T> izq, NodoBin<T> der, NodoAVL<T> padre) {
+    public NodoAVL(T dato, NodoBinAVL<T> izq, NodoBinAVL<T> der, NodoAVL<T> padre) {
         super(dato, izq, der);
         this.padre = padre;
     }

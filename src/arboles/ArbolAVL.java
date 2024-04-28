@@ -247,7 +247,7 @@ public class ArbolAVL<T extends Comparable<T>> {
         buscar(raiz, o);
     }
 
-    public void buscar(NodoBin<T> n, T o) throws ItemNotFoundException {
+    public void buscar(NodoBinAVL<T> n, T o) throws ItemNotFoundException {
         if (o.compareTo(n.getDato()) < 0) {
             if (n.getIzq() == null)
                 throw new ItemNotFoundException("El elemento no se encuentra");
