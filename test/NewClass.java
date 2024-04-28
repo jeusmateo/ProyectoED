@@ -24,13 +24,6 @@ import ordenamiento.ShellSortString2;
  */
 public class NewClass {
 
-    static void avlTest(){
-        var arbol = new ArbolAVL("hola");
-
-        arbol.insertar("hola");
-        arbol.insertar("adios");
-    }
-
     public static void main(String[] args) {
         List<String> cadena = LectordeMedline.readAndProcessFile("C:\\Users\\jeusm.MASTER\\Downloads\\medline_CDs.txt");
         // var busqueda = new BusquedaBinaria();
@@ -44,7 +37,11 @@ public class NewClass {
         // var ordenamiento = new ShellSortString(nuevo.toArray(String[]::new));
         // var ordenamiento = new ShellSortString2(nuevo);
         long start = System.currentTimeMillis();
-        avlTest();
+        ArbolAVL<String> arbol = new ArbolAVL<>(cadena.get(0));
+        for (int i = 1; i < cadena.size(); i++) {
+            arbol.insertar(cadena.get(i));
+        }
+        arbol.buscar("úvulopalatofaringoplastia");
         // cadena = ordenamiento.ordenaMerge(cadena);
         // ordenamiento.sort();
         // ordenamiento.insercion();
