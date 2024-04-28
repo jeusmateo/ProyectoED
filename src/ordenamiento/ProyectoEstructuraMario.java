@@ -4,7 +4,6 @@
 
 package ordenamiento;
 
-import Lec.*;
 import ProyectoED.LectordeMedline;
 
 import java.util.ArrayList;

@@ -1,7 +1,5 @@
 package ordenamiento;
 
-import Lec.BusquedaBinaria;
-import Lec.LectorMed;
 import ProyectoED.LectordeMedline;
 
 import java.util.ArrayList;

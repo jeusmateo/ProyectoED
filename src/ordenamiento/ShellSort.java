@@ -55,12 +55,12 @@ public class ShellSort<T extends Comparable<T>> {
     public static void main(String[] args) {
         List<String> arr = LectordeMedline.readAndProcessFile("medline_CDs.txt");
         ShellSort<String> shellSort = new ShellSort<>(arr);
-        BusquedaBinaria busqueda = new BusquedaBinaria();
+        // BusquedaBinaria busqueda = new BusquedaBinaria();
         boolean encontrado = false;
 
         long start = System.currentTimeMillis();
         shellSort.sort();
-        encontrado = busqueda.busquedaBinaria(arr, "encontrado");
+        // encontrado = busqueda.busquedaBinaria(arr, "encontrado");
         long finish = System.currentTimeMillis();
 
         System.out.println("Tiempo de ejecución: " + (finish - start) + " ms");

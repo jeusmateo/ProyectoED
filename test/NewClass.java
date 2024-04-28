@@ -9,9 +9,6 @@ import ordenamiento.BusquedaBinaria;
 import ordenamiento.Insercion;
 import ordenamiento.MergeSort;
 import ordenamiento.ShellSort;
-import ordenamiento.ShellSort2;
-import ordenamiento.ShellSortString;
-import ordenamiento.ShellSortString2;
 
 /*
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
