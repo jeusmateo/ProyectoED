@@ -21,7 +21,6 @@ import ordenamiento.ShellSort;
 public class View extends javax.swing.JFrame {
 
     final LectordeMedline LECTOR = new LectordeMedline();
-    final BusquedaBinaria BUSQUEDA = new BusquedaBinaria();
     final List<String> PALABRAS = LectordeMedline.readAndProcessFile("medline_CDs.txt");
 
     /**
@@ -94,7 +93,7 @@ public class View extends javax.swing.JFrame {
         //shellsort
         inicio = System.currentTimeMillis();
         ss.sort();
-        BUSQUEDA.busquedaBinaria(ss.getArr(), palabra);
+        BusquedaBinaria.busquedaBinaria(ss.getArr(), palabra);
         fin = System.currentTimeMillis();
         shellsort = fin - inicio;
 
@@ -102,7 +101,7 @@ public class View extends javax.swing.JFrame {
         inicio = System.currentTimeMillis();
         ordenado = new ArrayList<>(PALABRAS);
         ordenado = ms.ordenaMerge(ordenado);
-        BUSQUEDA.busquedaBinaria(ordenado, palabra);
+        BusquedaBinaria.busquedaBinaria(ordenado, palabra);
         fin = System.currentTimeMillis();
         mergesort = fin - inicio;
 

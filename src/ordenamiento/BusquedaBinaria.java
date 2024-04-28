@@ -5,7 +5,7 @@ import java.util.List;
 
 public class BusquedaBinaria {
 
-    public Boolean busquedaBinaria(List<String> corpusOrdenado, String elemento) {
+    public static Boolean busquedaBinaria(List<String> corpusOrdenado, String elemento) {
         int inicio = 0;
         int fin = corpusOrdenado.size() - 1;
     

@@ -5,9 +5,6 @@
  */
 package arboles;
 
-
-import ProyectoED.NodoBin;
-
 /**
  *
  * @author jorge.reyes
