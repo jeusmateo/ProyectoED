@@ -7,13 +7,13 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.util.Scanner;
 
-public class mezclaEquilibrada {
+public class MezclaHomogenea {
     public int PART;
 
-        public void particionInicial(String F, String F2, String F3, int PART) throws IOException {
+    public void particionInicial(String F, String F2, String F3, int PART) throws IOException {
         // Abrir el archivo F para lectura
         BufferedReader br = new BufferedReader(new FileReader(F));
-        
+
         // Abrir los archivos F2 y F3 para escritura
         BufferedWriter bwF2 = new BufferedWriter(new FileWriter(F2));
         BufferedWriter bwF3 = new BufferedWriter(new FileWriter(F3));
@@ -63,7 +63,7 @@ public class mezclaEquilibrada {
         bwF3.close();
     }
 
-        public void mezclaEquilibradaMetodo(String F, String F1, String F2, String F3) throws IOException {
+    public void mezclaEquilibradaMetodo(String F, String F1, String F2, String F3) throws IOException {
         boolean band;
         String inLineF1 = "", inLineF3 = "";
         particionInicial(F, F2, F3);
@@ -168,57 +168,55 @@ public class mezclaEquilibrada {
             // 4.6 END
         } // 5 END
 
-        //6
+        // 6
         if (ban1 == false) {
-            //6.1
-            if(ban3 == true){
+            // 6.1
+            if (ban3 == true) {
                 fc.append(r1 + " ");
-                //6.1.1
-                while(fa.hasNextLine()){
+                // 6.1.1
+                while (fa.hasNextLine()) {
                     r1 = fa.nextInt();
                     fc.append(r1 + " ");
                 }
-                //6.1.2 END
-            }
-            else{
+                // 6.1.2 END
+            } else {
                 fd.append(r1 + " ");
-                //6.1.3
-                while(fa.hasNextLine()){
+                // 6.1.3
+                while (fa.hasNextLine()) {
                     r1 = fa.nextInt();
                     fd.append(r1 + " ");
                 }
-                //6.1.4 END
+                // 6.1.4 END
             }
-            //6.2 END
+            // 6.2 END
         }
-        //7 END
+        // 7 END
 
-        //8
-        if(ban2 == false){
-            //8.1
-            if(ban3 == true){
+        // 8
+        if (ban2 == false) {
+            // 8.1
+            if (ban3 == true) {
                 fc.append(r2 + " ");
-                //8.1.1
-                while(fb.hasNextLine()){
+                // 8.1.1
+                while (fb.hasNextLine()) {
                     r2 = fb.nextInt();
                     fc.append(r2 + " ");
                 }
-                //8.1.2 END
-            }
-            else{
+                // 8.1.2 END
+            } else {
                 fd.append(r2 + " ");
-                //8.1.3
-                while(fb.hasNextLine()){
+                // 8.1.3
+                while (fb.hasNextLine()) {
                     r2 = fb.nextInt();
                     fd.append(r2 + " ");
                 }
-                //8.1.4 END
+                // 8.1.4 END
             }
-            //8.2 END
+            // 8.2 END
         }
-        //9 END
+        // 9 END
 
-        //10 
+        // 10
         fa.close();
         fb.close();
         fc.close();
@@ -236,12 +234,14 @@ public class mezclaEquilibrada {
     }
 
     public static void main(String[] args) {
-        mezclaEquilibrada particionador = new mezclaEquilibrada();
+        MezclaHomogenea particionador = new MezclaHomogenea();
         try {
-            particionador.mezclaEquilibradaMetodo("/Users/becario/Desktop/ProyectoED/src/ProyectoED/archivoOriginal.txt", "archivoParticion1.txt", "archivoParticion2.txt", "archivoParticion3.txt");
+            particionador.mezclaEquilibradaMetodo(
+                    "medline_CDs.txt", "archivoParticion1.txt",
+                    "archivoParticion2.txt", "archivoParticion3.txt");
         } catch (Exception e) {
             System.out.println("Ocurrió un error " + e.getMessage());
-            //para tener un mejor control de los errores
+            // para tener un mejor control de los errores
             e.printStackTrace();
         }
     }

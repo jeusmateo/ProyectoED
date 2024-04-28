@@ -7,6 +7,7 @@ package arboles;
 import ProyectoED.LectordeMedline;
 
 import java.util.ArrayList;
+import java.util.List;
 
 /**
  *
@@ -21,7 +22,7 @@ public class Raiz {
     public static String arbol = "";
 
     public Raiz(int grado) {
-        this.grado = grado;
+        Raiz.grado = grado;
         primerNodo = new Nodo();
         esRaiz = true;
         Lista.ingresados = new ArrayList<>(); // Inicialización de la lista
@@ -257,7 +258,7 @@ public class Raiz {
         return arbol;
     }
 
-    public boolean OrdenamientoArbolB(ArrayList<String> arreglo) {
+    public boolean OrdenamientoArbolB(List<String> arreglo) {
         boolean tst = false;
 
         long start = System.currentTimeMillis();
@@ -274,7 +275,7 @@ public class Raiz {
         return tst;
     }
 
-    private void setArreglo(ArrayList<String> arreglo) {
+    public void setArreglo(List<String> arreglo) {
         // Aquí debes recorrer el árbol B e insertar cada elemento del arreglo en el
         // árbol B
         for (String valor : arreglo) {

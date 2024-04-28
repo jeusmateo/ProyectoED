@@ -9,6 +9,10 @@ public class QuickSortMario {
 
     private ArrayList<String> arreglo;
 
+    public ArrayList<String> getArreglo() {
+        return arreglo;
+    }
+
     public void setArreglo(ArrayList<String> arreglo) {
         this.arreglo = arreglo;
     }

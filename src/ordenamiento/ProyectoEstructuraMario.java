@@ -18,6 +18,10 @@ public class ProyectoEstructuraMario {
     public void setArreglo(ArrayList<String> arreglo) {
         this.arreglo = arreglo;
     }
+    
+    public ArrayList<String>  getArreglo(){
+        return this.arreglo;
+    }
 
     public void bubbleSort() {
         int n = arreglo.size();

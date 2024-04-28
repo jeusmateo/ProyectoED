@@ -5,13 +5,20 @@
 package view;
 
 import ProyectoED.LectordeMedline;
+import arboles.ArbolABB1;
 import arboles.ArbolAVL;
+import arboles.Raiz;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
 import ordenamiento.BusquedaBinaria;
+import ordenamiento.Insercion;
 import ordenamiento.MergeSort;
+import ordenamiento.MezclaHomogenea;
+import ordenamiento.ProyectoEstructuraMario;
+import ordenamiento.QuickSortMario;
 import ordenamiento.ShellSort;
 
 /**
@@ -87,8 +94,29 @@ public class View extends javax.swing.JFrame {
         long inicio = 0, fin = 0, burbuja = 0, insercion = 0, shellsort = 0, quicksort = 0, mergesort = 0, mezcla = 0, abb = 0, avl = 0, ab = 0;
         String palabra = txtInput.getText().toLowerCase();
         List<String> ordenado;
-        ShellSort<String> ss = new ShellSort(new ArrayList<>(PALABRAS));
+        ProyectoEstructuraMario bburbuja = new ProyectoEstructuraMario();
+        Insercion insercion1 = new Insercion();
+        ShellSort<String> ss = new ShellSort<>(new ArrayList<>(PALABRAS));
         MergeSort<String> ms = new MergeSort<>();
+        QuickSortMario qs = new QuickSortMario();
+        MezclaHomogenea mh = new MezclaHomogenea();
+
+        //burbuja
+        bburbuja.setArreglo(new ArrayList<>(PALABRAS));
+        inicio = System.currentTimeMillis();
+        bburbuja.bubbleSort();
+        BusquedaBinaria.busquedaBinaria(bburbuja.getArreglo(), palabra);
+        fin = System.currentTimeMillis();
+        burbuja = fin - inicio;
+        
+        //insercion
+        insercion1.setA(new ArrayList<>(PALABRAS));
+        inicio = System.currentTimeMillis();
+        insercion1.insercion();
+        BusquedaBinaria.busquedaBinaria(insercion1.getA(), palabra);
+        fin = System.currentTimeMillis();
+        insercion = fin - inicio;
+
 
         //shellsort
         inicio = System.currentTimeMillis();
@@ -96,6 +124,14 @@ public class View extends javax.swing.JFrame {
         BusquedaBinaria.busquedaBinaria(ss.getArr(), palabra);
         fin = System.currentTimeMillis();
         shellsort = fin - inicio;
+
+        //quicksort
+        qs.setArreglo(new ArrayList<>(PALABRAS));
+        inicio = System.currentTimeMillis();
+        qs.sort();
+        BusquedaBinaria.busquedaBinaria(qs.getArreglo(), palabra);
+        fin = System.currentTimeMillis();
+        quicksort = fin - inicio;
 
         //MergeSort
         inicio = System.currentTimeMillis();
@@ -105,17 +141,44 @@ public class View extends javax.swing.JFrame {
         fin = System.currentTimeMillis();
         mergesort = fin - inicio;
 
-        //AVL
+        //mezcla homogenea
         inicio = System.currentTimeMillis();
+        try {
+            mh.mezclaEquilibradaMetodo("medline_CDs.txt", "archivoParticion1.txt", "archivoParticion2.txt", "archivoParticion3.txt");
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+        //abb
+        ArbolABB1<String> abb1 = new ArbolABB1<>(PALABRAS.get(0));
+        inicio = System.currentTimeMillis();
+        for(int i = 1; i < PALABRAS.size(); i++){
+            abb1.insertar(PALABRAS.get(i));
+        }
+        abb1.buscar(palabra);
+        fin = System.currentTimeMillis();
+        abb = fin - inicio;
+
+        //AVL
         ArbolAVL<String> arbolAvl = new ArbolAVL<>(PALABRAS.get(0));
         //arbol avl no inserta duplicados, ya lo comprobé, asi que en este caso no pasa nada
-        for (String e : PALABRAS) {
-            arbolAvl.insertar(e);
+        inicio = System.currentTimeMillis();
+        for (int i = 1; i < PALABRAS.size(); i++){
+            arbolAvl.insertar(PALABRAS.get(i));
+
         }
         arbolAvl.buscar(palabra);
         fin = System.currentTimeMillis();
         avl = fin - inicio;
 
+        //a b
+        Raiz arbolB = new Raiz(2);
+        inicio = System.currentTimeMillis();
+        arbolB.setArreglo(new ArrayList<>(PALABRAS));
+        arbolB.buscar(palabra);
+        fin = System.currentTimeMillis();
+        ab = fin - inicio;
+        
         System.out.println("Estadisticas: ");
         // metodos de ordenamiento
         System.out.println("Burbuja: " + burbuja + " ms");
